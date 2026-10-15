@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
+
+    <title>Forum</title>
+</head>
+
+<body class="d-flex flex-column vh-100 bg-light"> <!--vh-100 + overflow classes below: page is one screen tall, only the main content scrolls-->
+
+<!-- header start -->
+<header class="py-2 border-bottom border-5 bg-white shadow">
+    <div class="d-flex align-items-center justify-content-between px-4">
+
+        <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
+
+        <div class="px-5 py-2 " style="border: 2px solid black;">
+            <div class="clock"></div>
+        </div>
+
+    </div>
+</header>
+<!--end of header-->
+
+
+<!-- start of main -->
+<main class="d-flex flex-nowrap flex-grow-1 overflow-hidden">
+
+    <!-- start of the sidebar -->
+    <aside class="d-flex flex-column flex-shrink-0 p-3 "  style="width: 280px; background: linear-gradient(to right, black 0%, black 97%, white 100%);">
+
+        <h4 style=" color: black" class="p-3 bg-white">RingRota</h4>
+        <hr class="border border-white">
+
+        <ul class="nav nav-pills flex-column mb-auto">
+             <!-- first link url = staff-shift--->
+            <li class="nav-item" ><a th:href="@{/staff-shift}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" >
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-shift.gif}" alt="Calendar icon" width="32" height="32">
+                </div>
+
+                My Shifts</a>
+            </li>
+
+            <!-- My Clock In/Out: animated icon on a white circle (Clock icon from Flaticon - author to confirm) -->
+            <li class="nav-item"><a th:href="@{/staff-clock-in-out}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-clock.gif}" alt="Clock icon" width="32" height="32">
+                </div>
+                My Clock In/Out</a>
+            </li>
+            <!-- My Holiday Requests: no page yet (Airplane icon by Magnific, Flaticon) -->
+            <li class="nav-item"><a th:href="@{/staff-holiday-request}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-holiday.gif}" alt="Airplane icon" width="32" height="32">
+                </div>
+                My Holiday Requests</a>
+            </li>
+            <!-- My Forum: this page (icon from Flaticon) -->
+            <li class="nav-item"><a aria-current="page" th:href="@{/forum}" class="nav-link active text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-forum.gif}" alt="Group chat icon" width="32" height="32">
+                </div>
+                My Forum</a>
+            </li>
+        </ul>
+
+        <div class="border border-white"></div>
+        <hr>
+
+        <div class="dropdown">
+            <a href="#"
+               class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle me-2" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-profile.gif}" alt="Profile icon" width="32" height="32">
+                </div>
+                <strong th:text="${loggedName}"></strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li>
+                    <a class="dropdown-item" th:href="@{/settings}">
+                        Settings
+                    </a>
+                </li>
+
+                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form th:action="@{/logout}" method="post"> <!--POST + CSRF token: Spring Security logs out-->
+                        <button type="submit" class="dropdown-item">Sign out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- End Sidebar -->
+
+    <!--page main content: forum, new post + list of posts -->
+    <div class="flex-grow-1 overflow-auto">
+        <div class="container py-4">
+
+            <!-- Posts: every post, newest first ("posts" from ForumController /forum) -->
+            <div class="card border-0 bg-white shadow">
+                <div class="card-body">
+
+                    <h5 class="mb-3 border-bottom pb-2 text-center">Staff Forum</h5>
+
+                    <!-- One time messages after posting or picking up (flash attributes from ForumController) -->
+                    <div th:if="${forumMessage}" class="alert alert-success" role="alert" th:text="${forumMessage}"></div>
+                    <div th:if="${forumError}" class="alert alert-danger" role="alert" th:text="${forumError}"></div>
+
+                    <p th:if="${#lists.isEmpty(posts)}" class="text-muted text-center mb-0">No posts yet.</p>
+
+                    <!-- One card per post -->
+                    <div th:each="post : ${posts}" class="border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong th:text="${post.staffName}"></strong>
+                            <small class="text-muted" th:text="${#temporals.format(post.postedAt, 'dd/MM/yyyy HH:mm')}"></small>
+                        </div>
+                        <p class="my-2" th:text="${post.message}"></p>
+
+                        <!-- Only for a cover post (a chat post has no shift) -->
+                        <div th:if="${post.shiftDate != null}" class="d-flex justify-content-between align-items-center bg-light rounded p-2">
+                            <div><strong>Cover needed:</strong> [[${#temporals.format(post.shiftDate, 'EEE dd MMM yyyy')}]], [[${#temporals.format(post.shiftStarts, 'HH:mm')}]] - [[${#temporals.format(post.shiftEnds, 'HH:mm')}]]</div>
+
+                            <!-- OPEN: Pick up button (the postId goes in the URL, like approve) -->
+                            <form th:if="${post.status == 'OPEN'}" th:action="@{/pick-up-shift/{id}(id=${post.postId})}" method="post" class="m-0">
+                                <button type="submit" class="btn btn-sm text-white px-3" style="background-color: black;">Pick up</button>
+                            </form>
+
+                            <!-- CLAIMED: no button, shows who covered it -->
+                            <div th:if="${post.status == 'CLAIMED'}" class="badge text-bg-secondary" th:text="'Covered by ' + ${post.coveredBy}"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- New post: a chat message, or a cover request if one of my shifts is picked -->
+            <div class="card border-0 bg-white shadow mt-4">
+                <div class="card-body">
+
+                    <h5 class="mb-3 border-bottom pb-2 text-center">New Post</h5>
+
+                    <form th:action="@{/create-post}" method="post"> <!--th:action adds the CSRF token-->
+                        <!-- Floating labels: the label has to come AFTER the field for Bootstrap to float it -->
+                        <div class="form-floating mb-3">
+                            <textarea id="message" name="message" class="form-control" placeholder="Write a message to the team" style="height: 100px" required></textarea>
+                            <label for="message">Message</label>
+                        </div>
+
+                        <!-- "Chat" sends an empty shiftId (null in the controller); each other option is one of my shifts ("myShifts") -->
+                        <div class="form-floating mb-3">
+                            <select id="shiftId" name="shiftId" class="form-select">
+                                <option value="">Chat</option>
+                                <option th:each="shift : ${myShifts}" th:value="${shift.shiftId}"
+                                        th:text="${#temporals.format(shift.shiftDate, 'EEE dd MMM yyyy')} + ', ' + ${#temporals.format(shift.shiftStarts, 'HH:mm')} + ' - ' + ${#temporals.format(shift.shiftEnds, 'HH:mm')}"></option>
+                            </select>
+                            <label for="shiftId">Need cover for a shift? (choose a shift)</label>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn text-white px-4" style="background-color: black;">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Page Content -->
+</main>
+<!-- End Main -->
+
+<!--start of footer -->
+<footer class="py-3 text-center border-top border-5 bg-white shadow">
+    <p>Created by Tousni 2026.</p>
+</footer>
+<!-- End Footer -->
+
+<script th:src="@{/js/clock-custom.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
+    <!-- CHANGED: added sidebar-custom.css, colours the active sidebar pill #556688 -->
+    <link rel="stylesheet" th:href="@{/css/sidebar-custom.css}">
+
+    <title>Holiday Requests</title>
+</head>
+
+<body class="d-flex flex-column vh-100 bg-light"> <!--vh-100 + overflow classes below: page is one screen tall, only the main content scrolls-->
+
+<!-- Header (unchanged, copied exactly from admin-staff-management.html) -->
+
+<header class="py-2 border-bottom border-5 bg-white shadow">
+    <div class="d-flex align-items-center justify-content-between px-4">
+
+        <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
+
+        <div class="px-5 py-2 " style="border: 2px solid #000000;">
+            <div class="clock"></div>
+        </div>
+
+    </div>
+</header>
+<!--end of header-->
+
+
+<!-- start of main -->
+<main class="d-flex flex-nowrap flex-grow-1 overflow-hidden">
+
+    <!-- Admin sidebar -->
+    <aside class="d-flex flex-column flex-shrink-0 p-3 "  style="width: 280px; background: linear-gradient(to right, black 0%, black 97%, white 100%);">
+
+        <h4 style=" color: black" class="p-3 bg-white">RingRota</h4>
+        <hr class="border border-white">
+
+        <!-- CHANGED: added nav-pills so the current page shows as a pill -->
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item"><a th:href="@{/admin/staff-management}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                </svg>Staff management</a>
+
+            </li>
+
+            <li class="nav-item" ><a th:href="@{/admin/rota-management}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" >
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm0 1v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3z"/>
+                </svg>Rota management</a>
+
+            </li>
+
+            <li class="nav-item"><a th:href="@{/admin/staff-clock-management}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                </svg>Clock In/Out management</a>
+
+            </li>
+
+            <!-- CHANGED: "active" + aria-current="page" on this page's own link (highlights it; screen readers announce it as the current page) -->
+            <li class="nav-item"><a th:href="@{/admin/staff-holiday-request}" aria-current="page" class="nav-link active text-white icon-link icon-link-hover text-decoration-underline" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-x-fill" viewBox="0 0 16 16">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5m9.954 3H2.545c-.3 0-.545.224-.545.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5m-6.6 5.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z"/>
+                </svg>
+                Holiday Request management</a>
+            </li>
+            <li class="nav-item"><a th:href="@{/forum}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                </svg>
+                Forum</a>
+            </li>
+
+        </ul>
+
+        <div class="border border-white"></div>
+        <hr>
+
+        <div class="dropdown">
+            <a href="#"
+               class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+                <strong th:text="${loggedName}"></strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li>
+                    <a class="dropdown-item" th:href="@{/settings}">
+                        Settings
+                    </a>
+                </li>
+
+                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form th:action="@{/logout}" method="post"> <!--POST + CSRF token: Spring Security logs out-->
+                        <button type="submit" class="dropdown-item">Sign out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- End Sidebar -->
+    <!--page main content: every staff member's holiday requests -->
+    <div class="flex-grow-1 overflow-auto">
+        <div class="container py-4">
+
+            <div class="card border-0 bg-white shadow">
+                <div class="card-body">
+
+                    <h5 class="mb-3 border-bottom pb-2 text-center">Holiday Requests</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped-columns table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Request</th>
+                                <th scope="col">Staff</th>
+                                <th scope="col">From</th>
+                                <th scope="col">To</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Page Content -->
+</main>
+<!-- End Main -->
+
+<!--start of footer -->
+<footer class="py-3 text-center border-top border-5 bg-white shadow">
+    <p>Created by Tousni 2026.</p>
+</footer>
+
+<!-- End Footer -->
+<script th:src="@{/js/clock-custom.js}"></script>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>

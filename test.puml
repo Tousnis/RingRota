@@ -1,0 +1,137 @@
+@startuml
+class net.computingproject.ringrota.dto.StaffListDto {
+- int staffId
+- String name
+- String lastName
+- String email
+- String phoneNumber
+- EnumRole role
+- int totalHours
++ <<Create>> StaffListDto()
++ String getName()
++ void setName(String)
++ String getLastName()
++ void setLastName(String)
++ String getEmail()
++ void setEmail(String)
++ EnumRole getRole()
++ void setRole(EnumRole)
++ int getTotalHours()
++ void setTotalHours(int)
++ String getPhoneNumber()
++ void setPhoneNumber(String)
++ int getStaffId()
++ void setStaffId(int)
+}
+
+
+class net.computingproject.ringrota.services.EditStaffService {
+- StaffRepository staffRepository
++ <<Create>> EditStaffService(StaffRepository)
++ StaffListDto getStaffForEdit(Integer)
++ void updateStaffEdit(Integer,StaffListDto)
+}
+
+
+class net.computingproject.ringrota.services.AddStaffService {
+- StaffRepository staffRepository
++ <<Create>> AddStaffService(StaffRepository)
++ void createStaff(AddStaffDto)
+}
+
+
+class net.computingproject.ringrota.controller.StaffController {
+- AddStaffService addStaffService
+- StaffListService staffListService
+- StaffRepository staffRepository
+- EditStaffService editStaffService
++ <<Create>> StaffController(AddStaffService,StaffListService,StaffRepository,EditStaffService)
++ String staffDashboard()
++ String staffSignUp(Model)
++ String saveStaff(AddStaffDto,BindingResult)
++ String displayListOfStaff(Model)
++ String findStaff(Integer,Model)
++ String deleteStaff(Integer)
++ String findEditStaff(Integer,Model)
++ String updateStaff(Integer,StaffListDto,BindingResult,Model)
+}
+
+
+class net.computingproject.ringrota.entities.StaffEntity {
+- int staffId
+- String name
+- String lastName
+- String email
+- String phoneNumber
+- String password
+- EnumRole role
+- int totalHours
++ <<Create>> StaffEntity()
+}
+
+
+interface net.computingproject.ringrota.repository.StaffRepository {
+}
+class net.computingproject.ringrota.entities.ShiftEntity {
+- int id
+- LocalDate shiftDate
+- LocalTime shiftStarts
+- LocalTime shiftEnds
+- StaffEntity assignedStaff
++ <<Create>> ShiftEntity()
++ int getId()
++ void setId(int)
++ LocalDate getShiftDate()
++ void setShiftDate(LocalDate)
++ LocalTime getShiftStarts()
++ void setShiftStarts(LocalTime)
++ LocalTime getShiftEnds()
++ void setShiftEnds(LocalTime)
++ StaffEntity getAssignedStaff()
++ void setAssignedStaff(StaffEntity)
+}
+
+
+class net.computingproject.ringrota.RingRotaApplication {
++ {static} void main(String[])
+}
+
+class net.computingproject.ringrota.dto.AddStaffDto {
+- String name
+- String lastName
+- String email
+- String phoneNumber
+- String password
+- EnumRole role
++ <<Create>> AddStaffDto()
++ String getName()
++ void setName(String)
++ String getLastName()
++ void setLastName(String)
++ String getEmail()
++ void setEmail(String)
++ String getPassword()
++ void setPassword(String)
++ EnumRole getRole()
++ void setRole(EnumRole)
++ String getPhoneNumber()
++ void setPhoneNumber(String)
+}
+
+
+class net.computingproject.ringrota.services.StaffListService {
+- StaffRepository staffRepository
++ <<Create>> StaffListService(StaffRepository)
++ List<StaffListDto> displayStaff()
+}
+
+
+enum net.computingproject.ringrota.entities.EnumRole {
++  ADMIN
++  STAFF
+}
+
+
+
+org.springframework.data.jpa.repository.JpaRepository <|-- net.computingproject.ringrota.repository.StaffRepository
+@enduml

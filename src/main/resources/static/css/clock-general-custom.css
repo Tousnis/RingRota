@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Click Clock';
+    src: url('/fonts/cClickClock.ttf');
+
+}
+
+.clock {
+    font-family: 'Click Clock', sans-serif;
+    font-size: 1.5rem;
+}
+
+
+    .nav-pills {
+        --bs-nav-pills-link-active-bg: #556688;
+    }

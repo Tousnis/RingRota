@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <title>RingRota</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<!-- Header (same as the other pages) -->
+<header class="py-2 border-bottom border-5 bg-white shadow">
+    <div class="d-flex align-items-center justify-content-between px-4">
+
+    </div>
+</header>
+<!--end of header-->
+
+
+<!-- start of main: home page (no sidebar, nobody is logged in yet) -->
+<main class="flex-grow-1">
+    <div class="container py-5 text-center">
+
+        <!-- Two lines about the app (change the wording to your own) -->
+        <h1 class="mb-3">RingRota</h1>
+        <p class="lead mb-1">Shift management made simple for small businesses.</p>
+        <p class="lead mb-4">Plan the rota, track clock in and out, and handle holiday requests in one place.</p>
+
+        <!-- Links: login, about us, contact us -->
+        <div class="d-flex justify-content-center gap-3 mb-5">
+            <a class="btn text-white px-4" style="background-color: black;" th:href="@{/login}">Log in</a> <!--works once Spring Security is added-->
+            <a class="btn btn-outline-dark px-4" th:href="@{/about-us}">About us</a>
+            <a class="btn btn-outline-dark px-4" th:href="@{/contact-us}">Contact us</a>
+        </div>
+
+        <!-- Image showing what the app looks like (put the file in static/images) -->
+        <div class="card border-0 bg-white shadow mx-auto" style="max-width: 1000px;">
+            <div class="card-body p-2">
+                <img th:src="@{/img/ringrota-preview.png}" class="img-fluid rounded" alt="RingRota staff management page showing the sidebar and a table of staff members">
+            </div>
+        </div>
+
+    </div>
+</main>
+<!-- End Main -->
+
+<!-- Footer (same as the other pages) -->
+<footer class="py-3 text-center border-top border-5 bg-white shadow">
+    <p>Created by Tousni 2026. &copy;</p>
+</footer>
+<!-- End Footer -->
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>

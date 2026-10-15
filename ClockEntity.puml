@@ -1,0 +1,10 @@
+@startuml
+class net.computingproject.ringrota.entities.ClockEntity {
+- int clockId
+- LocalTime clockIn
+- LocalTime clockOut
+- LocalDate Date
+- StaffEntity assignedStaff
+}
+
+@enduml

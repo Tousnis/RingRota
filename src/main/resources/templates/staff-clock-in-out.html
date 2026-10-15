@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
+
+    <title>Clock In/Out</title>
+</head>
+
+<body class="d-flex flex-column vh-100 bg-light"> <!--vh-100 + overflow classes below: page is one screen tall, only the main content scrolls-->
+
+<!-- header start -->
+<header class="py-2 border-bottom border-5 bg-white shadow">
+    <div class="d-flex align-items-center justify-content-between px-4">
+
+        <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
+
+        <div class="px-5 py-2 " style="border: 2px solid black;">
+            <div class="clock"></div>
+        </div>
+
+    </div>
+</header>
+<!--end of header-->
+
+
+<!-- start of main -->
+<main class="d-flex flex-nowrap flex-grow-1 overflow-hidden">
+
+    <!-- start of the sidebar -->
+    <aside class="d-flex flex-column flex-shrink-0 p-3 "  style="width: 280px; background: linear-gradient(to right, black 0%, black 97%, white 100%);">
+
+        <h4 style=" color: black" class="p-3 bg-white">RingRota</h4>
+        <hr class="border border-white">
+
+        <ul class="nav nav-pills flex-column mb-auto">
+             <!-- first link url = staff-shift--->
+            <li class="nav-item" ><a th:href="@{/staff-shift}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" >
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-shift.gif}" alt="Calendar icon" width="32" height="32">
+                </div>
+
+                My Shifts</a>
+            </li>
+
+            <!-- My Clock In/Out: animated icon on a white circle (Clock icon from Flaticon - author to confirm) -->
+            <li class="nav-item"><a aria-current="page" th:href="@{/staff-clock-in-out}" class="nav-link active text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-clock.gif}" alt="Clock icon" width="32" height="32">
+                </div>
+                My Clock In/Out</a>
+            </li>
+            <!-- My Holiday Requests: no page yet (Airplane icon by Magnific, Flaticon) -->
+            <li class="nav-item"><a th:href="@{/staff-holiday-request}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-holiday.gif}" alt="Airplane icon" width="32" height="32">
+                </div>
+                My Holiday Requests</a>
+            </li>
+            <!-- My Forum: no page yet (icon from Flaticon) -->
+            <li class="nav-item"><a th:href="@{/forum}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
+                <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-forum.gif}" alt="Group chat icon" width="32" height="32">
+                </div>
+                My Forum</a>
+            </li>
+        </ul>
+
+        <div class="border border-white"></div>
+        <hr>
+
+        <div class="dropdown">
+            <a href="#"
+               class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle me-2" style="width: 36px; height: 36px;">
+                    <img th:src="@{/img/staff-profile.gif}" alt="Profile icon" width="32" height="32">
+                </div>
+                <strong th:text="${loggedName}"></strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li>
+                    <a class="dropdown-item" th:href="@{/settings}">
+                        Settings
+                    </a>
+                </li>
+
+                <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form th:action="@{/logout}" method="post"> <!--POST + CSRF token: Spring Security logs out-->
+                        <button type="submit" class="dropdown-item">Sign out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- End Sidebar -->
+
+    <!--page main content: big clock + clock in/out buttons -->
+    <div class="flex-grow-1 overflow-auto">
+        <div class="container py-4">
+
+            <div class="card border-0 bg-white shadow">
+                <div class="card-body text-center py-5">
+
+                    <!-- Same clock as the header (clock-custom.js fills any element with class "clock"),
+                         just made big with an inline font-size -->
+                    <div class="clock mb-5" style="font-size: 6rem;"></div>
+
+                    <!-- Message after clocking in/out (flash attributes from ClockController) -->
+                    <div th:if="${clockMessage}" class="alert alert-success" role="alert" th:text="${clockMessage}"></div>
+                    <div th:if="${clockError}" class="alert alert-danger" role="alert" th:text="${clockError}"></div>
+
+                    <div class="d-flex justify-content-center gap-4">
+
+                        <!-- Clock In: black button, white text.
+                             /staff-clock-in has no controller method yet, so submitting will error until it's built -->
+                        <form th:action="@{/staff-clock-in}" method="post">
+                            <button type="submit" class="btn btn-lg text-white px-5 py-3" style="background-color: #000000;">Clock In</button>
+                        </form>
+
+                        <!-- Clock Out: red button, white text.
+                             /staff-clock-out has no controller method yet -->
+                        <form th:action="@{/staff-clock-out}" method="post">
+                            <button type="submit" class="btn btn-lg btn-danger text-white px-5 py-3">Clock Out</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- My clock records: this staff member's own clock-ins/outs, view only -->
+            <div class="card border-0 bg-white shadow mt-4">
+                <div class="card-body">
+
+                    <h5 class="mb-3 border-bottom pb-2 text-center">My Clock Records</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped-columns table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Record</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Clock In</th>
+                                <th scope="col">Clock Out</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            <!-- STATIC FOR NOW: the controller has no Model yet, so this renders empty.
+                                 When the read is built, the controller must add "clockRecords" to the Model,
+                                 and the DTO needs fields named clockDate, clockIn, clockOut. -->
+                            <tr th:each="record, recordStat : ${staffClockRecords}">
+                                <td th:text="${recordStat.count}"></td>
+                                <td th:text="${record.clockDate}"></td>
+                                <td th:text="${record.clockIn}"></td>
+                                <td th:text="${record.clockOut}"></td>
+                                <td th:text="${record.status}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Page Content -->
+</main>
+<!-- End Main -->
+
+<!--start of footer -->
+<footer class="py-3 text-center border-top border-5 bg-white shadow">
+    <p>Created by Tousni 2026.</p>
+</footer>
+<!-- End Footer -->
+
+<script th:src="@{/js/clock-custom.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+
+
+
+</body>
+</html>
