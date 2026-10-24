@@ -115,4 +115,14 @@ public class StaffService {
     }
 
 
+
+    //Global controller
+    //method to display name in all the pages
+
+    public String displayName(String email) {
+        StaffEntity staff = staffRepository.findByEmail(email);
+        return  staff.getName();
+    }
+
+
 }

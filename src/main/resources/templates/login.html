@@ -42,7 +42,7 @@
 
                 <!-- Spring Security handles POST /login itself (no controller method needed) -->
                 <!-- th:action adds the hidden CSRF token automatically -->
-                <form th:action="@{/login}" method="post">
+                <form th:action="@{/login}" method="post" id="loginForm">
 
                     <!-- Shown when the login fails (/login?error): same message for wrong email or wrong password -->
                     <div th:if="${param.error}" class="alert alert-danger" role="alert">Wrong email or password.</div>
@@ -58,7 +58,11 @@
                         <label for="password">Password</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100" style="background-color: black">Log in</button>
+                    <button type="submit" id="loginButton" class="btn btn-primary w-100" style="background-color: black">Log in</button>
+                    <!-- Bootstrap spinner (Spinners > Size), hidden until this form is sent -->
+                    <div id="loginSpinner" class="spinner-border text-dark d-none d-block mx-auto" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
 
                 </form>
             </div>
@@ -74,6 +78,15 @@
 <!-- End Footer -->
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    // Spinner markup: Bootstrap 5.3 docs, Spinners > Size, https://getbootstrap.com/docs/5.3/components/spinners/
+    // Script written for RingRota: when the login form is sent, hide the button and show the spinner
+    document.getElementById('loginForm').addEventListener('submit', function () {
+        document.getElementById('loginButton').classList.add('d-none');       // hide the button
+        document.getElementById('loginSpinner').classList.remove('d-none');   // show the spinner
+    });
+</script>
 
 </body>
 </html>

@@ -1,6 +1,7 @@
 package net.computingproject.ringrota.controller;
 
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -8,9 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AccountController {
 
 
+
+    public AccountController() {
+
+    }
+
     //My own profile, for admin and staff (no /admin/ in the url, so any logged-in user)
     @GetMapping("/profile")
     public String displayProfile(){
+
         return "profile";
     }
 

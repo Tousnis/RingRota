@@ -9,6 +9,8 @@
     <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
     <!-- CHANGED: added the calendar's stylesheet, needed from staff-dashboard.html since this page now also shows the calendar -->
     <link rel="stylesheet" th:href="@{/css/year-calendar.min.css}">
+    <!-- RingRota calendar styling (overrides only), must come after year-calendar.min.css -->
+    <link rel="stylesheet" th:href="@{/css/calendar-custom.css}">
 
     <!-- CHANGED: title updated from "Manage Staff" to "Rota Management" -->
     <title>Rota Management</title>
@@ -118,7 +120,7 @@
     </aside>
 
     <!-- End Sidebar -->
-    <!--page main content: calendar on top, grouped-shift table below-->
+    <!--page main content: calendar on top, shift table below-->
     <div class="flex-grow-1 overflow-auto">
         <div class="container py-4">
 
@@ -150,37 +152,30 @@
                     <!-- CHANGED: heading from "Staff Details" to "Shift Details" -->
                     <h5 class="mb-3 border-bottom pb-2 text-center">Shift Details</h5>
                     <div class="table-responsive">
-                        <!-- CHANGED: table columns restructured for grouped shifts (one row per groupId: staff name, date range, total hours) instead of one row per staff member -->
+                        <!-- One row per shift: staff, date, time, and Edit / Delete for that one shift -->
                         <table class="table table-striped-columns table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Staff</th>
-                                <th scope="col">From</th>
-                                <th scope="col">To</th>
-                                <th scope="col">Total Hours</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
                                 <th scope="col">Actions</th>
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                            <tr th:each="group, groupStat : ${shiftGroups}">
-                                <td th:text="${groupStat.count}"></td>
-                                <td th:text="${group.staffName}"></td>
-                                <td th:text="${group.fromDate}"></td>
-                                <td th:text="${group.toDate}"></td>
-                                <td th:text="${group.totalHours}"></td>
+                            <tr th:each="shift : ${shifts}">
+                                <td th:text="${shift.staffName}"></td>
+                                <td th:text="${#temporals.format(shift.shiftDate, 'dd MMM yyyy')}"></td>
+                                <td>[[${#temporals.format(shift.shiftStarts, 'HH:mm')}]]–[[${#temporals.format(shift.shiftEnds, 'HH:mm')}]]</td>
                                 <td>
-                                    <a class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover icon-link icon-link-hover"
-                                       style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);"
-                                       th:href="@{/admin-rota/{groupId}(groupId=${group.groupId})}">
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                        </svg>
-
-                                        View / Edit
-
-                                    </a>
+                                    <div class="d-flex gap-2">
+                                        <!-- Edit: opens that shift (GET) -->
+                                        <a class="btn text-white" style="background-color: black;" th:href="@{/admin/shift-edit/{id}(id=${shift.shiftId})}">Edit</a>
+                                        <!-- Delete: changes data, so POST (with CSRF) like Approve / Reject -->
+                                        <form class="m-0" th:action="@{/admin/shift-delete/{id}(id=${shift.shiftId})}" method="post">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -215,7 +210,7 @@
             // CHANGED from staff-dashboard.html's stale "// real AJAX call goes here later" comment:
             // per the Objective 2 revision, day-click uses plain page navigation, not AJAX.
             // Navigates to a day-specific URL — adjust the path once that route exists.
-            window.location.href = '/admin-rota/day/' + e.date.toISOString().split('T')[0];
+            window.location.href = '/admin/rota-day/' + e.date.toISOString().split('T')[0];
         }
     });
 </script>

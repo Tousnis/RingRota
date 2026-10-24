@@ -20,3 +20,4 @@ function showTime() {
         clocks[i].innerHTML = currentTime;
     }}
 showTime();
+

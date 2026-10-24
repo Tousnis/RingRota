@@ -1,11 +1,11 @@
 @font-face {
-    font-family: 'Click Clock';
-    src: url('/fonts/cClickClock.ttf');
+    font-family: 'DS Snowfall';
+    src: url('/fonts/DsSnowfall-lxEVw.ttf');
 
 }
 
 .clock {
-    font-family: 'Click Clock', sans-serif;
+    font-family: 'DS Snowfall', sans-serif;
     font-size: 1.5rem;
 }
 

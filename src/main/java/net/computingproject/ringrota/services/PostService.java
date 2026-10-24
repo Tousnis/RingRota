@@ -24,7 +24,6 @@ public class PostService {
 
     public PostService(PostRepository postRepository, ShiftRepository shiftRepository, StaffRepository staffRepository) {
         this.postRepository = postRepository;
-
         this.shiftRepository = shiftRepository;
         this.staffRepository = staffRepository;
     }

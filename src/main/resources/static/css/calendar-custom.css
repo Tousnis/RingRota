@@ -1,0 +1,70 @@
+/* RingRota styling for js-year-calendar.
+   Only overrides, the library's own CSS is not changed.
+   Loaded after year-calendar.min.css so these rules win. */
+
+
+/* Header bar (‹ October 2026 ›): black like the sidebar */
+.calendar .calendar-header {
+    border: 0;
+    margin-bottom: 12px;
+    background: black;
+    border-radius: 6px;
+}
+
+.calendar .calendar-header table th {
+    color: white;
+    font-size: 20px;
+    padding: 10px 16px;
+}
+
+/* Header: no hover at all (stays black; this also stops the library's light-grey hover) */
+.calendar .calendar-header table th:hover {
+    background: black;
+}
+
+
+/* The month name is already in the header, so hide the second one */
+.calendar table.month th.month-title {
+    display: none;
+}
+
+
+/* Let the month fill the card instead of sitting small in the middle */
+.calendar table.month {
+    width: 100%;
+}
+
+.calendar table.month th.day-header {
+    font-size: 13px;
+    color: gray;
+    text-transform: uppercase;
+    padding: 8px 0;
+    border-bottom: 2px solid black;
+}
+
+/* Every day draws its own border, so together they make the grid */
+.calendar table.month td.day {
+    height: 56px;
+    border: 1px solid black;
+    vertical-align: middle;
+}
+
+.calendar table.month td.day .day-content {
+    font-size: 15px;
+    padding: 8px;
+    text-align: left;
+    border-radius: 0;
+}
+
+/* Day hover: same colour as the active sidebar link (aria-current="page") */
+.calendar table.month td.day .day-content:hover {
+    background: #556688;   /* --bs-nav-pills-link-active-bg in clock-general-custom.css */
+    color: white;
+}
+
+
+/* Weekends (Sunday and Saturday columns) slightly grey */
+.calendar table.month td.day:first-child,
+.calendar table.month td.day:last-child {
+    background: whitesmoke;
+}

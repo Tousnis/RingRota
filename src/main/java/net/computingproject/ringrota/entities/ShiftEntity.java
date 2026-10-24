@@ -21,9 +21,6 @@ public class ShiftEntity {
     @Column(nullable = false)
     private LocalTime shiftEnds;
 
-    @Column(nullable = false)
-    private String groupId; // shared ID for shifts created in the same assignment action single day or range
-
     @ManyToOne  //Joining the foreign key, which is this case it is passing the class
     @JoinColumn(name = "staff_id", nullable = false)
     private StaffEntity assignedStaff;
@@ -63,14 +60,6 @@ public class ShiftEntity {
 
     public void setShiftEnds(LocalTime endTime) {
         this.shiftEnds = endTime;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
     }
 
     public StaffEntity getAssignedStaff() {

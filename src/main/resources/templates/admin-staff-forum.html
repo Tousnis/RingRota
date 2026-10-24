@@ -19,7 +19,9 @@
 <header class="py-2 border-bottom border-5 bg-white shadow">
     <div class="d-flex align-items-center justify-content-between px-4">
 
+        <div class="px-5 py-2 " style="border: 2px solid #000000;">
         <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
+        </div>
 
         <div class="px-5 py-2 " style="border: 2px solid #000000;">
             <div class="clock"></div>
@@ -200,8 +202,20 @@
 
 <!-- End Footer -->
 <script th:src="@{/js/clock-custom.js}"></script>
-
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    // Adapted from: Tutorialpedia, "Refresh button in HTML/CSS",
+    // https://www.tutorialpedia.org/blog/refresh-button-html-css/
+    // Changed: button click -> timer every 30 s; confirm() -> only refresh when the message box is empty and not in use
+    setInterval(function () {
+        const message = document.getElementById('message');
+        const typing = message.value.trim() !== '' || document.activeElement === message;
+        if (!typing) {
+            location.reload();
+        }
+    }, 30000);
+</script>
+
 
 </body>
 </html>

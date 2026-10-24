@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize //authorize any request that matches below
 
                         .requestMatchers("/", "/about-us/**", "/contact-us/**", "/css/**", "/js/**", "/img/**", "/fonts/**").permitAll()
-                        .requestMatchers("/admin/**", "/admin-rota/**").hasRole("ADMIN") //change admin rota later
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
