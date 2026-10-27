@@ -4,7 +4,7 @@ package net.computingproject.ringrota.controller;
 import jakarta.validation.Valid;
 import net.computingproject.ringrota.dto.AddStaffDto;
 import net.computingproject.ringrota.dto.StaffListDto;
-import net.computingproject.ringrota.entities.StaffEntity;
+
 import net.computingproject.ringrota.repository.StaffRepository;
 import net.computingproject.ringrota.services.StaffService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,7 +27,7 @@ public class StaffController {
     private final StaffService staffService; //created once, shared, injected wherever needed, because they don't hold per-request data — they just do things.
 
 
-    public StaffController(StaffService staffService, StaffRepository staffRepository) {
+    public StaffController(StaffService staffService) {
         this.staffService = staffService;
     }
 
