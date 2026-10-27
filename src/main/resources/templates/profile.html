@@ -7,7 +7,7 @@
     <title>My Profile</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column vh-100 bg-light">
 
 
 <header class="py-3 text-center border-bottom border-5 bg-white shadow">
@@ -15,9 +15,8 @@
 </header>
 
 
-<main class="flex-grow-1">
+<main class="flex-grow-1 overflow-auto">
 
-    <!-- Return: /home sends admin to staff management and staff to My Shifts -->
     <a class="icon-link icon-link-hover  ms-3 mt-2  " style="--bs-link-hover-color-rgb: 25, 135, 84; color: black" th:href="@{/home}">
         Return
 
@@ -26,7 +25,6 @@
         </svg>
     </a>
 
-    <!-- My own details, view only (STATIC for now: no data until AccountController loads it) -->
     <div class="container py-4">
         <div class="card border-0 bg-white shadow w-50 mx-auto mt-3">
             <div class="card-body py-3">
@@ -42,28 +40,28 @@
                     <hr>
                 </div>
                 <div class="mb-3">
-                    <strong th:text="${}"></strong>
-                    <p class="mb-0"></p>
+                    <strong>First Name</strong>
+                    <p class="mb-0" th:text="${myProfile.name}"></p>
                 </div>
                 <div class="mb-3">
                     <strong>Last Name</strong>
-                    <p class="mb-0"></p>
+                    <p class="mb-0" th:text="${myProfile.lastName}"></p>
                 </div>
                 <div class="mb-3">
                     <strong>Email</strong>
-                    <p class="mb-0"></p>
+                    <p class="mb-0" th:text="${myProfile.email}"></p>
                 </div>
                 <div class="mb-3">
                     <strong>Phone Number</strong>
-                    <p class="mb-0"></p>
+                    <p class="mb-0" th:text="${myProfile.phoneNumber}"></p>
                 </div>
                 <div class="mb-3">
                     <strong>Role</strong>
-                    <p class="mb-0"></p>
+                    <p class="mb-0" th:text="${myProfile.role}"></p>
                 </div>
                 <div class="mb-0">
                     <strong>Total Hours</strong>
-                    <p class="mb-0"></p>
+                    <p class="mb-0" th:text="${myProfile.totalHours}"></p>
                 </div>
             </div>
         </div>
@@ -73,7 +71,7 @@
 
 
 <footer class="py-3 text-center border-top border-5 bg-white shadow">
-    <p>Created by Tousni 2026.</p>
+    <p>Created by Tousni 2026. &copy;</p>
 </footer>
 
 

@@ -29,7 +29,7 @@ public class ClockService {
         this.staffRepository = staffRepository;
     }
 
-    // Admin: all staff clock records, turned into DTOs for the table
+    //admin side display all the clock records
     public List<ClockRecordDto> displayAllStaffRecords() {
 
         List<ClockEntity> records = clockRepository.findAll();
@@ -65,7 +65,7 @@ public class ClockService {
         record.setAssignedStaff(staff);
         record.setClockDate(LocalDate.now());
         record.setClockIn(LocalTime.now());
-        record.setStatus("PENDING"); //waits for the admin to approve it
+        record.setStatus("PENDING");
 
         clockRepository.save(record);
     }
@@ -81,7 +81,7 @@ public class ClockService {
         }
         //updating the previous clock record row without creating a new one
         openRecord.setClockOut(LocalTime.now());
-        clockRepository.save(openRecord); //same row, so it updates
+        clockRepository.save(openRecord);
     }
 
     //staff side method to display all  the records from staff
@@ -109,14 +109,14 @@ public class ClockService {
     public void approveRecord(Integer clockId){
         ClockEntity record = clockRepository.findById(clockId).orElseThrow();
         record.setStatus("APPROVED");
-        clockRepository.save(record); //same row, so it updates
+        clockRepository.save(record);
     }
 
-    //admin side reject record
+    //admin side/delete reject record
     public void rejectRecord(Integer clockId){
         ClockEntity record = clockRepository.findById(clockId).orElseThrow();
         record.setStatus("REJECTED");
-        clockRepository.save(record); //same row, so it updates
+        clockRepository.save(record);
     }
 
 

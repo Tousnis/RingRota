@@ -7,7 +7,7 @@
     <title>Edit Staff</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column vh-100 bg-light">
 
 
 
@@ -17,7 +17,7 @@
 
 
 
-<main class="flex-grow-1">
+<main class="flex-grow-1 overflow-auto">
 
     <a class="icon-link icon-link-hover  ms-3 mt-2  " style="--bs-link-hover-color-rgb: 25, 135, 84; color: black" th:href="@{/admin/view-staff-profile/{id}(id=${editStaff.staffId})}"> <!--Note-->
         Return
@@ -88,7 +88,7 @@
 
 
 <footer class="py-3 text-center border-top border-5 bg-white shadow">
-    <p>Created by Tousni 2026.</p>
+    <p>Created by Tousni 2026. &copy;</p>
 </footer>
 
 </body>

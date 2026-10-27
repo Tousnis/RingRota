@@ -1,0 +1,24 @@
+services:
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: ring_rota_db
+      MYSQL_ROOT_PASSWORD: ringrota
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ring_rota_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ringrota
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    depends_on:
+      db:
+        condition: service_healthy

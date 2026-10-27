@@ -11,39 +11,32 @@
     <title>Day Detail</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column vh-100 bg-light">
 
-<!-- Header (same style as admin-rota-management.html) -->
-<header class="py-2 border-bottom border-5 bg-white shadow">
-    <div class="d-flex align-items-center justify-content-between px-4">
-        <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
-        <div class="px-5 py-2 " style="border: 2px solid #000000;">
-            <div class="clock"></div>
-        </div>
-    </div>
+<!-- Header -->
+<header class="py-3 text-center border-bottom border-5 bg-white shadow">
+    <h3>Add staff to a shift</h3>
 </header>
 
-<main class="flex-grow-1">
+<main class="flex-grow-1 overflow-auto">
     <div class="container py-4">
 
-        <!-- Back link to the main rota page -->
-        <a th:href="@{/admin-rota}" class="link-body-emphasis link-offset-2">&larr; Back to Rota</a>
+        <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84; color: black" th:href="@{/admin/rota-management}">
+            Return
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+            </svg>
+        </a>
 
         <div class="card border-0 bg-white shadow mt-3">
             <div class="card-body">
-                <h5 class="mb-3 border-bottom pb-2 text-center" th:text="${date}">Date</h5>
+                <h5 class="mb-3 border-bottom pb-2 text-center" th:text="${#temporals.format(date, 'EEE dd MMM yyyy')}">Date</h5>
+                <p class="text-info">Reminder: each day needs at least 7 staff on shift.</p>
 
                 <div class="row">
-                    <!-- Available staff -->
                     <div class="col-6">
                         <h6>Available Staff</h6>
 
-                        <!-- ADDED: each available staff member gets their own small Add Shift
-                             form, right underneath their name. No JS needed -- plain Thymeleaf,
-                             one form per row. staffId and the clicked date are pre-filled as
-                             hidden inputs; End Date, Start Time, End Time are left as real,
-                             editable inputs, since admin may want to extend into a range or
-                             change the times. Submits to the same saveShift() POST method. -->
                         <ul class="list-group">
                             <li class="list-group-item" th:each="staff : ${availableStaff}">
                                 <div class="mb-2">
@@ -52,18 +45,10 @@
 
                                 <form th:action="@{/admin/shift-save}" method="post" class="row g-2 align-items-end">
 
-                                    <!-- Hidden: which staff member this row belongs to -->
                                     <input type="hidden" name="staffId" th:value="${staff.staffId}">
 
-                                    <div class="col-auto">
-                                        <label class="form-label">Start Date</label>
-                                        <input type="date" name="shiftDateStarts" class="form-control form-control-sm" required>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <label class="form-label">End Date</label>
-                                        <input type="date" name="shiftDateEnds" class="form-control form-control-sm" required>
-                                    </div>
+                                    <input type="hidden" name="shiftDateStarts" th:value="${date}">
+                                    <input type="hidden" name="shiftDateEnds" th:value="${date}">
 
                                     <div class="col-auto">
                                         <label class="form-label">Start Time</label>
@@ -76,19 +61,22 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <button type="submit" class="btn btn-sm btn-primary">Add</button>
+                                        <button type="submit" class="btn btn-sm text-white" style="background-color: black;">Add</button>
                                     </div>
 
                                 </form>
                             </li>
                         </ul>
-                        <!-- End of added per-row Add Shift form -->
                     </div>
 
-                    <!-- Already on shift — PENDING, not built yet -->
                     <div class="col-6">
                         <h6>Already on Shift</h6>
-                        <p class="text-muted">Not yet available</p>
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="staff : ${onShift}">
+                                <span th:text="${staff.name}"></span> — <span th:text="${staff.role}"></span>
+                            </li>
+                        </ul>
+                        <p th:if="${#lists.isEmpty(onShift)}" class="text-muted">No one is on shift yet.</p>
                     </div>
                 </div>
 
@@ -99,7 +87,7 @@
 </main>
 
 <footer class="py-3 text-center border-top border-5 bg-white shadow">
-    <p>Created by Tousni 2026.</p>
+    <p>Created by Tousni 2026. &copy;</p>
 </footer>
 
 <script th:src="@{/js/clock-custom.js}"></script>

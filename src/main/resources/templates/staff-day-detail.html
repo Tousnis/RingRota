@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
+
+    <title>On Shift</title>
+</head>
+
+<body class="d-flex flex-column vh-100 bg-light">
+
+<!-- Header -->
+<header class="py-3 text-center border-bottom border-5 bg-white shadow">
+    <h3>Who is on shift</h3>
+</header>
+
+<main class="flex-grow-1 overflow-auto">
+    <div class="container py-4">
+
+        <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84; color: black" th:href="@{/staff-shift}">
+            Return
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+            </svg>
+        </a>
+
+        <div class="card border-0 bg-white shadow mt-3">
+            <div class="card-body">
+                <h5 class="mb-3 border-bottom pb-2 text-center" th:text="${#temporals.format(date, 'EEE dd MMM yyyy')}">Date</h5>
+
+                <h6>On Shift</h6>
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="staff : ${onShift}">
+                        <span th:text="${staff.name}"></span> — <span th:text="${staff.role}"></span>
+                    </li>
+                </ul>
+                <p th:if="${#lists.isEmpty(onShift)}" class="text-muted">No one is on shift yet.</p>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer class="py-3 text-center border-top border-5 bg-white shadow">
+    <p>Created by Tousni 2026. &copy;</p>
+</footer>
+
+<script th:src="@{/js/clock-custom.js}"></script>
+
+</body>
+</html>

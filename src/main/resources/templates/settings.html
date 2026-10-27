@@ -7,7 +7,7 @@
     <title>Settings</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column vh-100 bg-light">
 
 
 <header class="py-3 text-center border-bottom border-5 bg-white shadow">
@@ -15,9 +15,8 @@
 </header>
 
 
-<main class="flex-grow-1">
+<main class="flex-grow-1 overflow-auto">
 
-    <!-- Return: /home sends admin to staff management and staff to My Shifts -->
     <a class="icon-link icon-link-hover  ms-3 mt-2  " style="--bs-link-hover-color-rgb: 25, 135, 84; color: black" th:href="@{/home}">
         Return
 
@@ -26,13 +25,16 @@
         </svg>
     </a>
 
-    <!-- Change my own password (STATIC for now: no th:action until AccountController has the POST) -->
     <div class="container py-4">
         <div class="card border-0 bg-white shadow w-50 mx-auto mt-3">
             <div class="card-body py-3">
                 <h5 class="mb-3 border-bottom pb-2 text-center">Change Password</h5>
 
-                <form method="post">
+                <form th:action="@{/save-new-password}" method="post">
+
+                    <div th:if="${passwordChanged}" class="alert alert-success" role="alert" th:text="${passwordChanged}"></div>
+                    <div th:if="${passwordError}" class="alert alert-danger" role="alert" th:text="${passwordError}"></div>
+
                     <div class="mb-3 form-floating">
                         <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Current password" autocomplete="current-password" required>
                         <label for="currentPassword">Current password</label>
@@ -58,7 +60,7 @@
 
 
 <footer class="py-3 text-center border-top border-5 bg-white shadow">
-    <p>Created by Tousni 2026.</p>
+    <p>Created by Tousni 2026. &copy;</p>
 </footer>
 
 

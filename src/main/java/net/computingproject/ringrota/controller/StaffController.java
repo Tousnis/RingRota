@@ -126,10 +126,8 @@ public class StaffController {
 
 
     //Admin side - (DELETE) deletes a staff member through the service
-    //URL /admin/delete-staff/{id}, the id comes from the URL (Delete button on the profile page)
-    //No template, redirects to /admin/staff-management
-    //Flash attributes: memberDeleted (deleted) or errorMessage (staff member still has shifts or clock records,
-    //the database refuses because of the foreign key, so DataIntegrityViolationException is caught instead of a 500)
+    //URL /admin/delete-staff/{id}
+    //Redirects to URL redirect:/admin/staff-management
     @PostMapping("admin/delete-staff/{id}")
     public String deleteStaff(@PathVariable Integer id, RedirectAttributes redirectAttributes){
 

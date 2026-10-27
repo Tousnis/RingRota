@@ -26,7 +26,6 @@ public class StaffListDto {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    //no validation on email: the edit form does not send it (email can't be edited)
     private String email;
 
 
@@ -35,7 +34,7 @@ public class StaffListDto {
     private String phoneNumber;
 
 
-    @NotNull(message = "Role must be chosen") //@NotBlank only works on text, so enums use @NotNull
+    @NotNull(message = "Role must be chosen")
     private EnumRole role;
 
     private int totalHours;

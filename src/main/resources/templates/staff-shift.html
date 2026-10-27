@@ -8,19 +8,20 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
     <link rel="stylesheet" th:href="@{/css/year-calendar.min.css}">
-    <!-- RingRota calendar styling (overrides only), must come after year-calendar.min.css -->
     <link rel="stylesheet" th:href="@{/css/calendar-custom.css}">
 
     <title>My Shifts</title>
 </head>
 
-<body class="d-flex flex-column vh-100 bg-light"> <!--vh-100 + overflow classes below: page is one screen tall, only the main content scrolls-->
+<body class="d-flex flex-column vh-100 bg-light">
 
-<!-- Header (same as admin-rota-management.html) -->
+<!-- Header -->
 <header class="py-2 border-bottom border-5 bg-white shadow">
     <div class="d-flex align-items-center justify-content-between px-4">
 
-        <h2 class="m-2" th:text="${loggedName}">Hello, Username</h2>
+        <h2 class="m-2" th:text="'Hello, ' + ${loggedName}"></h2>
+
+        <h3>My Shifts</h3>
 
         <div class="px-5 py-2 " style="border: 2px solid #000000;">
             <div class="clock"></div>
@@ -34,14 +35,13 @@
 <!-- start of main -->
 <main class="d-flex flex-nowrap flex-grow-1 overflow-hidden">
 
-    <!-- Sidebar (same structure as admin-rota-management.html, but STAFF links instead of admin ones) -->
+    <!-- Sidebar -->
     <aside class="d-flex flex-column flex-shrink-0 p-3 "  style="width: 280px; background: linear-gradient(to right, black 0%, black 97%, white 100%);">
 
         <h4 style=" color: black" class="p-3 bg-white">RingRota</h4>
         <hr class="border border-white">
 
         <ul class="nav nav-pills flex-column mb-auto">
-            <!-- My Shifts: this page -->
             <li class="nav-item" ><a aria-current="page" th:href="@{/staff-shift}" class="nav-link active text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" >
                 <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
                     <img th:src="@{/img/staff-shift.gif}" alt="Calendar icon" width="32" height="32">
@@ -50,21 +50,18 @@
                 My Shifts</a>
             </li>
 
-            <!-- My Clock In/Out: animated icon on a white circle (Clock icon from Flaticon - author to confirm) -->
             <li class="nav-item"><a th:href="@{/staff-clock-in-out}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
                 <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
                     <img th:src="@{/img/staff-clock.gif}" alt="Clock icon" width="32" height="32">
                 </div>
                 My Clock In/Out</a>
             </li>
-            <!-- My Holiday Requests: no page yet (Airplane icon by Magnific, Flaticon) -->
             <li class="nav-item"><a th:href="@{/staff-holiday-request}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
                 <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
                     <img th:src="@{/img/staff-holiday.gif}" alt="Airplane icon" width="32" height="32">
                 </div>
                 My Holiday Requests</a>
             </li>
-            <!-- My Forum: no page yet (icon from Flaticon) -->
             <li class="nav-item"><a th:href="@{/forum}" class="nav-link text-white icon-link icon-link-hover text-decoration-underline p-2" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
                 <div class="bi d-inline-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 36px; height: 36px;">
                     <img th:src="@{/img/staff-forum.gif}" alt="Group chat icon" width="32" height="32">
@@ -96,7 +93,7 @@
                 <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
-                    <form th:action="@{/logout}" method="post"> <!--POST + CSRF token: Spring Security logs out-->
+                    <form th:action="@{/logout}" method="post">
                         <button type="submit" class="dropdown-item">Sign out</button>
                     </form>
                 </li>
@@ -105,18 +102,18 @@
     </aside>
     <!-- End Sidebar -->
 
-    <!--page main content: calendar on top, my shifts table below -->
+    <!-- page main content -->
     <div class="flex-grow-1 overflow-auto">
         <div class="container py-4">
 
-            <!-- Calendar (view only for staff, no day-click yet) -->
+            <p class="text-info">If this is your first login, please change your password in Settings.</p>
+
             <div class="card border-0 bg-white shadow mb-4">
                 <div class="card-body">
                     <div class="calendar"></div>
                 </div>
             </div>
 
-            <!-- My shifts table: no add / edit buttons, staff can only view -->
             <div class="card border-0 bg-white shadow">
                 <div class="card-body">
 
@@ -125,21 +122,14 @@
                         <table class="table table-striped-columns table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">Start</th>
-                                <th scope="col">End</th>
+                                <th scope="col">Time</th>
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                            <!-- STATIC FOR NOW: displayStaffShift() has no Model yet, so this renders empty.
-                                 When the read is built, the controller must add "staffShifts" to the Model
-                                 (same pattern as displayRota()). Field names match ShiftDetailsDto. -->
-                            <tr th:each="shift, shiftStat : ${staffShifts}">
-                                <td th:text="${shiftStat.count}"></td>
-                                <td th:text="${shift.shiftDate}"></td>
-                                <td th:text="${shift.shiftStarts}"></td>
-                                <td th:text="${shift.shiftEnds}"></td>
+                            <tr th:each="shift : ${staffShifts}">
+                                <td th:text="${#temporals.format(shift.shiftDate, 'dd MMM yyyy')}"></td>
+                                <td>[[${#temporals.format(shift.shiftStarts, 'HH:mm')}]]–[[${#temporals.format(shift.shiftEnds, 'HH:mm')}]]</td>
                             </tr>
                             </tbody>
                         </table>
@@ -154,7 +144,7 @@
 
 <!--start of footer -->
 <footer class="py-3 text-center border-top border-5 bg-white shadow">
-    <p>Created by Tousni 2026.</p>
+    <p>Created by Tousni 2026. &copy;</p>
 </footer>
 <!-- End Footer -->
 
@@ -162,11 +152,26 @@
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/year-calendar.min.js}"></script>
 
-<script>
-    // Same calendar setup as admin-rota-management.html: one month, opens on today.
-    // No clickDay here: staff only view their shifts, they don't assign them.
+<script th:inline="javascript">
+
+    const shifts = /*[[${staffShifts}]]*/ [];
+
     const calendar = new Calendar('.calendar', {
-        numberMonthsDisplayed: 1, startDate: new Date()
+        numberMonthsDisplayed: 1, startDate: new Date(),
+        weekStart: 1,
+        style: 'background',
+        dataSource: shifts.map(function (shift) {
+            const day = new Date(shift.shiftDate + 'T00:00');
+            return { startDate: day, endDate: day, color: 'darkgreen' };
+        }),
+
+        clickDay: function(e) {
+            const d = e.date;
+            const date = d.getFullYear() + '-'
+                       + String(d.getMonth() + 1).padStart(2, '0') + '-'
+                       + String(d.getDate()).padStart(2, '0');
+            window.location.href = '/staff-shift-day/' + date;
+        }
     });
 </script>
 

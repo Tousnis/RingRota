@@ -1,6 +1,7 @@
 package net.computingproject.ringrota.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.computingproject.ringrota.dto.ClockRecordDto;
 import net.computingproject.ringrota.services.ClockService;
 import org.springframework.security.core.Authentication;
@@ -46,9 +47,9 @@ public class ClockController {
 
 
 
-    //Staff side clock in
+    //Staff/admin side clock in
     @PostMapping("/staff-clock-in")
-    public String clockIn(Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String clockIn(Authentication authentication, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             clockService.clockIn(authentication.getName());
             redirectAttributes.addFlashAttribute("clockMessage", "You have clocked in!");
@@ -56,12 +57,16 @@ public class ClockController {
         } catch (IllegalStateException e) {
             redirectAttributes.addFlashAttribute("clockError",e.getMessage());
         }
+        //if admin go back to the admin page
+        if (request.isUserInRole("ADMIN")) {
+            return "redirect:/admin/staff-clock-management";
+        }
         return "redirect:/staff-clock-in-out";
     }
 
-   //Staff side clock out
+   //Staff/admin clock out
     @PostMapping("/staff-clock-out")
-    public String clockOut(Authentication authentication, RedirectAttributes redirectAttributes){
+    public String clockOut(Authentication authentication, RedirectAttributes redirectAttributes, HttpServletRequest request){
 
         try {
             clockService.clockOut(authentication.getName());
@@ -69,6 +74,9 @@ public class ClockController {
 
         }catch (IllegalStateException e){
             redirectAttributes.addFlashAttribute("clockError", e.getMessage());
+        }
+        if (request.isUserInRole("ADMIN")) {
+            return "redirect:/admin/staff-clock-management";
         }
         return "redirect:/staff-clock-in-out";
     }

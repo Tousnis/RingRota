@@ -63,8 +63,13 @@
 }
 
 
-/* Weekends (Sunday and Saturday columns) slightly grey */
-.calendar table.month td.day:first-child,
-.calendar table.month td.day:last-child {
+/* Weekends slightly grey: weeks start on Monday, so Saturday and Sunday are the last two columns */
+.calendar table.month td.day:nth-child(6),
+.calendar table.month td.day:nth-child(7) {
     background: whitesmoke;
+}
+
+/* Shift days (style: background): white number on the coloured box */
+.calendar table.month td.day.day-start .day-content {
+    color: white;
 }

@@ -77,7 +77,6 @@ public class StaffService {
     // once for displaying the staff profile hardcoded data from the db  = admin/view-staff-profile/
     //two for displaying the staff profile for edits staff/find-edit/{id}
 
-
     public StaffListDto getStaffForEdit(Integer id) {
         StaffEntity staff = staffRepository.findById(id).orElseThrow();
 

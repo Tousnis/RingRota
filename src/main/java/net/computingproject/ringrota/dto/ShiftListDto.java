@@ -9,16 +9,17 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class MyShiftDto {
+public class ShiftListDto {
 
-    //Note: dto for the "Need cover for a shift?" dropdown, one option per shift of the logged-in staff
 
-    private Integer shiftId;        //the option value sent with the form
+
+    private Integer shiftId;
     private LocalDate shiftDate;
     private LocalTime shiftStarts;
     private LocalTime shiftEnds;
+    private String staffName;
 
-    public MyShiftDto(){
+    public ShiftListDto(){
 
     }
 

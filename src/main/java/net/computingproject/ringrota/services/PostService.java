@@ -1,7 +1,8 @@
 package net.computingproject.ringrota.services;
 
 
-import net.computingproject.ringrota.dto.MyShiftDto;
+import net.computingproject.ringrota.dto.AddPostDto;
+import net.computingproject.ringrota.dto.ShiftListDto;
 import net.computingproject.ringrota.dto.PostDto;
 import net.computingproject.ringrota.entities.PostEntity;
 import net.computingproject.ringrota.entities.ShiftEntity;
@@ -28,11 +29,11 @@ public class PostService {
         this.staffRepository = staffRepository;
     }
 
-    //Display every post for the forum page, newest first
+    //method to display all the posts
     public List<PostDto> displayAllPost(){
 
       List<PostEntity> posts = postRepository.findAllByOrderByPostedAtDesc();
-      List<PostDto> postList = new ArrayList<>(); //empty list to fill with dtos
+      List<PostDto> postList = new ArrayList<>();
 
       for (PostEntity post : posts){
           PostDto dto = new PostDto();
@@ -41,14 +42,13 @@ public class PostService {
           dto.setPostedAt(post.getPostedAt());
           dto.setMessage(post.getMessage());
 
-          dto.setStatus(post.getStatus()); //empty for a chat post
+          dto.setStatus(post.getStatus());
 
-          //a chat post has no shift, so only read the shift if there is one (otherwise NullPointerException)
           if (post.getShift() != null){
               dto.setShiftDate(post.getShift().getShiftDate());
               dto.setShiftStarts(post.getShift().getShiftStarts());
               dto.setShiftEnds(post.getShift().getShiftEnds());
-              dto.setCoveredBy(post.getShift().getAssignedStaff().getName()); //whoever has the shift now (shown only when CLAIMED)
+              dto.setCoveredBy(post.getShift().getAssignedStaff().getName());
           }
 
           postList.add(dto);
@@ -57,25 +57,25 @@ public class PostService {
     }
 
 
-    public void createPost(String email, String message, Integer shiftId){
+    //method to create a post
+    public void createPost(String email, AddPostDto dto){
         StaffEntity staff = staffRepository.findByEmail(email);
 
         PostEntity post = new PostEntity();
         post.setStaff(staff);
-        post.setMessage(message);
-        post.setPostedAt(LocalDateTime.now()); //time comes from the server, like clock in
+        post.setMessage(dto.getMessage());
+        post.setPostedAt(LocalDateTime.now());
 
-        //"Chat" in the dropdown sends nothing, so shiftId is null for a chat post
-        if (shiftId != null){
-            ShiftEntity shift = shiftRepository.findById(shiftId).orElseThrow();
+        if (dto.getShiftId() != null){
+            ShiftEntity shift = shiftRepository.findById(dto.getShiftId()).orElseThrow();
             post.setShift(shift);
-            post.setStatus("OPEN"); //waiting for someone to pick it up
+            post.setStatus("OPEN");
         }
 
         postRepository.save(post);
     }
 
-    //Pick up a cover post: the same shift row is given to the person who picked it up (one update)
+    //method to pick up a shift
     public void pickUpShift(Integer postId, String email){
         StaffEntity picker = staffRepository.findByEmail(email);
         PostEntity post = postRepository.findById(postId).orElseThrow();
@@ -88,21 +88,21 @@ public class PostService {
         }
 
         ShiftEntity shift = post.getShift();
-        shift.setAssignedStaff(picker);   //same shift, new staff member
-        shiftRepository.save(shift);      //has an id, so it updates
+        shift.setAssignedStaff(picker);
+        shiftRepository.save(shift);
 
-        post.setStatus("CLAIMED");        //hides the Pick up button
+        post.setStatus("CLAIMED");
         postRepository.save(post);
     }
 
-    //The logged-in staff member's shifts, for the "Need cover for a shift?" dropdown
-    public List<MyShiftDto> displayMyShifts(String email){
+    //method to display my shifts for the dropdown
+    public List<ShiftListDto> displayMyShifts(String email){
         StaffEntity staff = staffRepository.findByEmail(email);
         List<ShiftEntity> shifts = shiftRepository.findByAssignedStaff(staff);
-        List<MyShiftDto> myShifts = new ArrayList<>();
+        List<ShiftListDto> myShifts = new ArrayList<>();
 
         for (ShiftEntity shift : shifts){
-            MyShiftDto dto = new MyShiftDto();
+            ShiftListDto dto = new ShiftListDto();
             dto.setShiftId(shift.getShiftId());
             dto.setShiftDate(shift.getShiftDate());
             dto.setShiftStarts(shift.getShiftStarts());

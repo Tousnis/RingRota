@@ -14,17 +14,16 @@ public class PostDto {
 
     //Note: dto for the Get method to display the forum posts
 
-    private Integer postId;          //needed for the Pick up button url
-    private String staffName;        //who wrote the post
+    private Integer postId;
+    private String staffName;
     private LocalDateTime postedAt;
     private String message;
 
-    //only filled in for a cover post (empty for a chat post)
     private LocalDate shiftDate;
     private LocalTime shiftStarts;
     private LocalTime shiftEnds;
-    private String status;           //OPEN or CLAIMED
-    private String coveredBy;        //name of who picked the shift up, once CLAIMED
+    private String status;
+    private String coveredBy;
 
     public PostDto(){
 
