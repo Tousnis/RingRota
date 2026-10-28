@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/clock-general-custom.css}">
 
     <title>Day Detail</title>
 </head>
@@ -31,7 +30,7 @@
         <div class="card border-0 bg-white shadow mt-3">
             <div class="card-body">
                 <h5 class="mb-3 border-bottom pb-2 text-center" th:text="${#temporals.format(date, 'EEE dd MMM yyyy')}">Date</h5>
-                <p class="text-info">Reminder: each day needs at least 7 staff on shift.</p>
+                <p style="color: black;">Reminder: each day needs at least 7 staff on shift.</p>
 
                 <div class="row">
                     <div class="col-6">
@@ -51,13 +50,15 @@
                                     <input type="hidden" name="shiftDateEnds" th:value="${date}">
 
                                     <div class="col-auto">
-                                        <label class="form-label">Start Time</label>
-                                        <input type="time" name="shiftStarts" class="form-control form-control-sm" required>
+                                        <label class="form-label">Start Time
+                                            <input type="time" name="shiftStarts" class="form-control form-control-sm" required>
+                                        </label>
                                     </div>
 
                                     <div class="col-auto">
-                                        <label class="form-label">End Time</label>
-                                        <input type="time" name="shiftEnds" class="form-control form-control-sm" required>
+                                        <label class="form-label">End Time
+                                            <input type="time" name="shiftEnds" class="form-control form-control-sm" required>
+                                        </label>
                                     </div>
 
                                     <div class="col-auto">
@@ -90,7 +91,6 @@
     <p>Created by Tousni 2026. &copy;</p>
 </footer>
 
-<script th:src="@{/js/clock-custom.js}"></script>
 
 </body>
 </html>

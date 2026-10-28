@@ -30,20 +30,20 @@
 
                 <div th:if="${shiftError}" class="alert alert-danger" role="alert" th:text="${shiftError}"></div>
 
-                <form th:action="@{/admin/save-shift-edit/{id}(id=${editShift.shiftId})}" method="post">
+                <form th:action="@{/admin/save-shift-edit/{id}(id=${editShift.shiftId})}" th:object="${editShift}" method="post">
 
                     <div class="form-floating mb-3">
-                        <input type="date" id="shiftDate" name="shiftDate" th:value="${editShift.shiftDate}" class="form-control" required>
+                        <input type="date" id="shiftDate" th:field="*{shiftDate}" class="form-control" required>
                         <label for="shiftDate">Date</label>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col form-floating">
-                            <input type="time" id="shiftStarts" name="shiftStarts" th:value="${editShift.shiftStarts}" class="form-control" required>
+                            <input type="time" id="shiftStarts" th:field="*{shiftStarts}" class="form-control" required>
                             <label for="shiftStarts">Start time</label>
                         </div>
                         <div class="col form-floating">
-                            <input type="time" id="shiftEnds" name="shiftEnds" th:value="${editShift.shiftEnds}" class="form-control" required>
+                            <input type="time" id="shiftEnds" th:field="*{shiftEnds}" class="form-control" required>
                             <label for="shiftEnds">End time</label>
                         </div>
                     </div>

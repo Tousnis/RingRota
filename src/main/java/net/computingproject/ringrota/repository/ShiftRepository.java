@@ -21,4 +21,7 @@ public interface ShiftRepository extends JpaRepository<ShiftEntity, Integer> {
 
     //shifts of one staff member between two dates (for holiday approval)
     public List<ShiftEntity> findByAssignedStaffAndShiftDateBetween(StaffEntity staff, LocalDate from, LocalDate to);
+
+    //shifts of one staff member from a date onwards (for the holiday dropdown)
+    public List<ShiftEntity> findByAssignedStaffAndShiftDateGreaterThanEqual(StaffEntity staff, LocalDate date);
 }

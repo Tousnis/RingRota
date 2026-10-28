@@ -36,7 +36,7 @@
 
 .calendar table.month th.day-header {
     font-size: 13px;
-    color: gray;
+    color: black;
     text-transform: uppercase;
     padding: 8px 0;
     border-bottom: 2px solid black;

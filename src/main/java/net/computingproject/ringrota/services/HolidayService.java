@@ -13,6 +13,7 @@ import net.computingproject.ringrota.repository.ShiftRepository;
 import net.computingproject.ringrota.repository.StaffRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class HolidayService {
     public List<ShiftListDto> displayMyShifts(String email){
 
         StaffEntity staff = staffRepository.findByEmail(email);
-        List<ShiftEntity> listOfShifts = shiftRepository.findByAssignedStaff(staff);
+        List<ShiftEntity> listOfShifts = shiftRepository.findByAssignedStaffAndShiftDateGreaterThanEqual(staff, LocalDate.now());
         List<ShiftListDto> shiftList = new ArrayList<>();
 
         for (ShiftEntity shifts : listOfShifts){

@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import net.computingproject.ringrota.dto.AddStaffDto;
 import net.computingproject.ringrota.dto.StaffListDto;
 
-import net.computingproject.ringrota.repository.StaffRepository;
 import net.computingproject.ringrota.services.StaffService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -74,8 +73,12 @@ public class StaffController {
             return "admin-create-staff-sign-up";
         }
 
-        staffService.createStaff(dto);
-        redirectAttributes.addFlashAttribute("memberCreated", "Staff member created successfully.");
+        try {
+            staffService.createStaff(dto);
+            redirectAttributes.addFlashAttribute("memberCreated", "Staff member created successfully.");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "A staff member with this email or phone number already exists.");
+        }
         return "redirect:/admin/create-staff-sign-up";
     }
 

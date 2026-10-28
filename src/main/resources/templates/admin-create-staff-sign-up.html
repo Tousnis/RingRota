@@ -34,6 +34,7 @@
         <!--Dto object signUpform, sending to controller -->
 
         <div th:if="${memberCreated}" class="alert alert-success" role="alert" th:text="${memberCreated}"></div> <!--One time message-->
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
         <div class="mb-3 form-floating"> <!--margin bottom size-->
             <input type="text" id="name" th:field="*{name}" class="form-control " placeholder="e.g. Tousni">

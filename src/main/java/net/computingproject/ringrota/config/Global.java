@@ -1,7 +1,5 @@
 package net.computingproject.ringrota.config;
 
-import net.computingproject.ringrota.entities.StaffEntity;
-import net.computingproject.ringrota.repository.StaffRepository;
 import net.computingproject.ringrota.services.StaffService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +11,7 @@ public class Global {
 
     private final StaffService staffService;
 
-    public Global(StaffRepository staffRepository, StaffService staffService) {
+    public Global( StaffService staffService) {
 
         this.staffService = staffService;
     }

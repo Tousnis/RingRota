@@ -49,7 +49,7 @@ public class ShiftController {
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("onShift", shiftService.displayStaffOnShift(date));
         model.addAttribute("date", date);
-        return "day-detail";
+        return "admin-rota-add-shift-day";
     }
 
 
@@ -110,7 +110,7 @@ public class ShiftController {
     public String findShiftForEdit(@PathVariable Integer id, Model model){
 
         model.addAttribute("editShift", shiftService.findShiftForEdit(id));
-        return "admin-shift-edit";
+        return "admin-find-shift-edit";
     }
 
 
@@ -150,13 +150,13 @@ public class ShiftController {
     //Staff side - (Read)
     //staff clicks a day on the calendar and sees who is on shift
     //URL /staff-shift-day/{date}
-    //Template name = staff-day-detail
+    //Template name = staff-shift-day
     //dto passed in thymeleaf = onShift
     @GetMapping("/staff-shift-day/{date}")
     public String displayStaffDay(@PathVariable LocalDate date, Model model){
         model.addAttribute("onShift", shiftService.displayStaffOnShift(date));
         model.addAttribute("date", date);
-        return "staff-day-detail";
+        return "staff-shift-day";
     }
 
 }
