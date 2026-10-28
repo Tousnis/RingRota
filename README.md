@@ -56,6 +56,7 @@ cd RingRota
 ![cd RingRota](screenshots/3-cd-ringrota.png)
 
 **4) Start RingRota**
+Make sure the Docker engine it is running or it won't work
 ```
 docker compose up --build
 ```
